@@ -12,6 +12,14 @@ SmartResolve 360 is a complaint management web application for submitting, track
 - Search and filtering
 - Responsive midnight-themed UI
 - REST API integration
+- Advanced Features
+* Emergency detection center (auto-flags urgent complaints)
+* Building digital map with room-level risk visualization
+* Smart rule-based category/priority auto-detection while typing
+* Voice-to-text complaint entry
+* QR code scan demo for room selection
+* Analytics dashboard (resolution rate, category breakdown)
+* Multi-language support (English, Hindi, Kannada)
 
 ## Technologies
 
