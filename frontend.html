@@ -1,0 +1,4778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartResolve 360</title>
+
+  <style>
+    :root {
+      --bg: #080b16;
+      --sidebar: #060914;
+      --panel: #11182b;
+      --panel-2: #18233d;
+      --violet: #7c3aed;
+      --aqua: #22d3ee;
+      --lime: #a3e635;
+      --gold: #fbbf24;
+      --coral: #fb4d5d;
+      --white: #f8fafc;
+      --muted: #94a3b8;
+      --border: #263552;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--white);
+      background: var(--bg);
+    }
+
+    aside {
+      position: fixed;
+      width: 230px;
+      height: 100vh;
+      padding: 25px 15px;
+      background: var(--sidebar);
+      border-right: 1px solid var(--border);
+      z-index: 100;
+    }
+
+    .logo {
+      margin: 0 0 30px;
+      font-size: 25px;
+      color: var(--white);
+    }
+
+    .logo span {
+      color: var(--aqua);
+    }
+
+    aside a {
+      display: block;
+      padding: 12px;
+      margin: 7px 0;
+      color: var(--muted);
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    aside a:hover {
+      color: var(--white);
+      background: var(--panel);
+      border-left: 3px solid var(--aqua);
+    }
+
+    .live {
+      position: absolute;
+      bottom: 25px;
+      color: var(--lime);
+      font-size: 13px;
+    }
+
+    main {
+      margin-left: 230px;
+      padding: 28px;
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 22px;
+    }
+
+    .top h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 24px;
+      margin-bottom: 20px;
+      background: linear-gradient(110deg, #151035, #102d43);
+      border: 1px solid #3b2b78;
+      border-radius: 16px;
+    }
+
+    .hero h2 {
+      margin-top: 0;
+    }
+
+    .health {
+      min-width: 150px;
+      text-align: center;
+      padding: 15px;
+      border: 3px solid var(--lime);
+      border-radius: 50%;
+      color: var(--lime);
+      font-size: 26px;
+      font-weight: bold;
+      height: 150px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+
+    .card,
+    section {
+      padding: 18px;
+      margin: 18px 0;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel);
+    }
+
+    .card {
+      margin: 0;
+      border-top: 3px solid var(--violet);
+    }
+
+    .card:hover {
+      border-top-color: var(--aqua);
+    }
+
+    .number {
+      margin-top: 8px;
+      color: var(--aqua);
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    h2 {
+      margin-top: 0;
+      color: var(--white);
+    }
+
+    h3 {
+      color: var(--aqua);
+    }
+
+    .form-grid,
+    .filters {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .filters {
+      grid-template-columns: repeat(4, 1fr);
+      margin-bottom: 15px;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+      width: 100%;
+      padding: 11px;
+      color: var(--white);
+      font-family: Arial, sans-serif;
+      border-radius: 7px;
+    }
+
+    input,
+    select,
+    textarea {
+      border: 1px solid var(--border);
+      background: #0b1220;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: 2px solid var(--aqua);
+    }
+
+    button {
+      border: 0;
+      background: var(--violet);
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s ease;
+    }
+
+    button:hover {
+      background: #6330c4;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .aqua-button {
+      background: #0891b2;
+    }
+
+    .aqua-button:hover {
+      background: #0e7490;
+    }
+
+    .red-button {
+      background: #d83348;
+    }
+
+    .red-button:hover {
+      background: #b91c32;
+    }
+
+    .smart-box {
+      padding: 13px;
+      margin: 15px 0;
+      color: #bff6ff;
+      background: #0d3340;
+      border-left: 5px solid var(--aqua);
+      border-radius: 6px;
+    }
+
+    .emergency-box {
+      display: none;
+      padding: 13px;
+      margin: 15px 0;
+      color: #ffe4e6;
+      background: #491522;
+      border-left: 5px solid var(--coral);
+      border-radius: 6px;
+    }
+
+    .complaint {
+      padding: 16px;
+      margin: 12px 0;
+      background: var(--panel-2);
+      border-left: 5px solid var(--gold);
+      border-radius: 8px;
+    }
+
+    .urgent-card {
+      border-left-color: var(--coral);
+      background: #331520;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 9px;
+      margin-right: 5px;
+      color: #071019;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .low {
+      background: var(--muted);
+    }
+
+    .medium {
+      background: var(--gold);
+    }
+
+    .high {
+      background: #fb923c;
+    }
+
+    .urgent {
+      background: var(--coral);
+      color: white;
+    }
+
+    .action-btn {
+      width: auto;
+      padding: 6px 12px;
+      margin-right: 5px;
+      margin-top: 8px;
+      font-size: 12px;
+    }
+
+    .room-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .room {
+      padding: 14px;
+      color: #061015;
+      text-align: center;
+      border-radius: 7px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .room:hover {
+      outline: 3px solid white;
+    }
+
+    .safe {
+      background: var(--lime);
+    }
+
+    .active {
+      background: var(--gold);
+    }
+
+    .high-room {
+      background: #fb923c;
+    }
+
+    .urgent-room {
+      background: var(--coral);
+      color: white;
+    }
+
+    #toast {
+      display: none;
+      position: fixed;
+      right: 25px;
+      bottom: 25px;
+      padding: 15px 20px;
+      background: var(--panel-2);
+      border-left: 5px solid var(--aqua);
+      border-radius: 7px;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      max-width: 420px;
+    }
+
+    #photoPreview {
+      max-width: 130px;
+      max-height: 100px;
+      margin-top: 10px;
+      border: 2px solid var(--aqua);
+      border-radius: 7px;
+      display: none;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: var(--panel);
+      padding: 24px;
+      border-radius: 12px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+    }
+
+    .server-status {
+      display: inline-block;
+      padding: 7px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .server-online {
+      color: #071019;
+      background: var(--lime);
+    }
+
+    .server-offline {
+      color: white;
+      background: var(--coral);
+    }
+
+    .loading {
+      color: var(--aqua);
+      padding: 15px;
+      text-align: center;
+    }
+
+    @media (max-width: 850px) {
+      aside {
+        position: static;
+        width: 100%;
+        height: auto;
+      }
+
+      aside a {
+        display: inline-block;
+      }
+
+      .live {
+        position: static;
+        margin-top: 15px;
+      }
+
+      main {
+        margin-left: 0;
+      }
+
+      .grid,
+      .form-grid,
+      .filters {
+        grid-template-columns: 1fr;
+      }
+
+      .full {
+        grid-column: auto;
+      }
+
+      .hero {
+        display: block;
+      }
+
+      .health {
+        margin-top: 15px;
+        width: 100%;
+      }
+
+      .top {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .room-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <aside>
+
+    <h2 class="logo">
+      SmartResolve <span>360</span>
+    </h2>
+
+    <a href="#dashboard">⌂ Dashboard</a>
+    <a href="#complaints">☷ Complaints</a>
+    <a href="#building">▦ Building Map</a>
+    <a href="#emergency">⚠ Emergency</a>
+    <a href="#maintenance">⚙ Maintenance</a>
+    <a href="#analytics">▥ Analytics</a>
+
+    <p class="live">
+      ● System Live<br>
+      <span id="liveTime"></span>
+    </p>
+
+  </aside>
+
+  <main>
+
+    <!-- TOP BAR -->
+
+    <div class="top">
+
+      <div>
+
+        <h1 id="title">
+          Building Command Center
+        </h1>
+
+        <p class="muted">
+          Smart Apartment Maintenance Control
+        </p>
+
+        <span
+          id="serverStatus"
+          class="server-status server-offline">
+          ● Checking server...
+        </span>
+
+      </div>
+
+      <div style="display:flex; gap:10px;">
+
+        <button
+          class="red-button"
+          style="width:auto;"
+          onclick="resetSystemData()">
+          Reset System Data
+        </button>
+
+        <select
+          onchange="changeLanguage(this.value)"
+          style="width:auto;">
+
+          <option value="English">
+            English
+          </option>
+
+          <option value="Hindi">
+            Hindi
+          </option>
+
+          <option value="Kannada">
+            Kannada
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+
+    <!-- DASHBOARD -->
+
+    <section
+      id="dashboard"
+      class="hero">
+
+      <div>
+
+        <h2>
+          Welcome to SmartResolve 360
+        </h2>
+
+        <p class="muted">
+          Track complaints, detect emergencies,
+          assign technicians, and monitor building
+          health from one place.
+        </p>
+
+        <p id="insight">
+          🧠 Smart Insight: Calculating trends...
+        </p>
+
+        <p id="forecast">
+          🔮 Basic Forecast: Calculating risk forecast...
+        </p>
+
+      </div>
+
+      <div
+        class="health"
+        id="healthCircle">
+
+        100
+        <br>
+        <small>/ 100</small>
+
+      </div>
+
+    </section>
+
+
+    <!-- DASHBOARD CARDS -->
+
+    <div class="grid">
+
+      <div class="card">
+        Total Complaints
+        <div
+          class="number"
+          id="total">
+          0
+        </div>
+      </div>
+
+      <div class="card">
+        Pending
+        <div
+          class="number"
+          id="pending">
+          0
+        </div>
+      </div>
+
+      <div class="card">
+        In Progress
+        <div
+          class="number"
+          id="progress">
+          0
+        </div>
+      </div>
+
+      <div class="card">
+        Resolved
+        <div
+          class="number"
+          id="resolved">
+          0
+        </div>
+      </div>
+
+      <div class="card">
+        Urgent
+        <div
+          class="number"
+          id="urgentCount">
+          0
+        </div>
+      </div>
+
+      <div class="card">
+        SLA Breached
+        <div
+          class="number"
+          id="sla">
+          0
+        </div>
+      </div>
+
+      <div class="card">
+        Reopened
+        <div
+          class="number"
+          id="reopened">
+          0
+        </div>
+      </div>
+
+      <div class="card">
+        Average Resolution
+        <div class="number">
+          8h
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- COMPLAINT FORM -->
+
+    <section id="complaints">
+
+      <h2 id="formTitle">
+        Report a Complaint
+      </h2>
+
+      <form id="complaintForm">
+
+        <div class="form-grid">
+
+          <div>
+
+            <label>
+              Resident Name
+            </label>
+
+            <input
+              id="name"
+              required
+              placeholder="Example: Anu">
+
+          </div>
+
+
+          <div>
+
+            <label>
+              Room Number
+            </label>
+
+            <input
+              id="room"
+              required
+              placeholder="Example: A-203">
+
+          </div>
+
+
+          <div>
+
+            <label>
+              Contact Number
+            </label>
+
+            <input
+              id="phone"
+              required
+              maxlength="10"
+              placeholder="10 digit number">
+
+          </div>
+
+
+          <div>
+
+            <label>
+              Date
+            </label>
+
+            <input
+              id="date"
+              type="date"
+              required>
+
+          </div>
+
+
+          <div>
+
+            <label>
+              Category
+            </label>
+
+            <select
+              id="category"
+              required>
+
+              <option value="">
+                Select Category
+              </option>
+
+              <option>
+                Plumbing
+              </option>
+
+              <option>
+                Electrical
+              </option>
+
+              <option>
+                Water Supply
+              </option>
+
+              <option>
+                Internet
+              </option>
+
+              <option>
+                Housekeeping
+              </option>
+
+              <option>
+                Maintenance
+              </option>
+
+              <option>
+                Security
+              </option>
+
+              <option>
+                Other
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div>
+
+            <label>
+              Priority
+            </label>
+
+            <select
+              id="priority"
+              required>
+
+              <option value="">
+                Select Priority
+              </option>
+
+              <option>
+                Low
+              </option>
+
+              <option>
+                Medium
+              </option>
+
+              <option>
+                High
+              </option>
+
+              <option>
+                Urgent
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="full">
+
+            <label>
+              Issue Description
+            </label>
+
+            <textarea
+              id="description"
+              required
+              rows="4"
+              placeholder="Example: Water is leaking from bathroom pipe."></textarea>
+
+          </div>
+
+
+          <div>
+
+            <label>
+              Additional Information
+            </label>
+
+            <input
+              id="extra"
+              placeholder="Optional">
+
+          </div>
+
+
+          <div>
+
+            <label>
+              📷 Attach Evidence
+            </label>
+
+            <input
+              id="photoInput"
+              type="file"
+              accept="image/*"
+              onchange="previewImage(event)">
+
+            <img
+              id="photoPreview"
+              alt="Evidence Preview">
+
+          </div>
+
+        </div>
+
+
+        <div class="button-group">
+
+          <button
+            type="button"
+            class="aqua-button"
+            onclick="startVoice()">
+
+            🎙 Speak Complaint
+
+          </button>
+
+          <button
+            type="button"
+            class="aqua-button"
+            onclick="scanQR()">
+
+            Scan Room QR Demo
+
+          </button>
+
+        </div>
+
+
+        <div
+          class="smart-box"
+          id="smartBox">
+
+          🧠 Smart Rule-Based Detection:
+          Type a description for suggestions.
+
+        </div>
+
+
+        <div
+          class="emergency-box"
+          id="emergencyBox">
+
+          🚨 EMERGENCY COMPLAINT:
+          Potential safety issue detected.
+
+        </div>
+
+
+        <button
+          type="submit"
+          id="submitBtn">
+
+          Submit / Update Complaint
+
+        </button>
+
+
+        <p id="formMessage"></p>
+
+      </form>
+
+    </section>
+
+
+    <!-- COMPLAINT REGISTRY -->
+
+    <section>
+
+      <h2>
+        Complaint Registry
+      </h2>
+
+      <div class="filters">
+
+        <input
+          id="search"
+          oninput="renderAll()"
+          placeholder="Search ID, resident, room or category">
+
+
+        <select
+          id="statusFilter"
+          onchange="renderAll()">
+
+          <option value="">
+            All Statuses
+          </option>
+
+          <option>
+            Pending
+          </option>
+
+          <option>
+            In Progress
+          </option>
+
+          <option>
+            Resolved
+          </option>
+
+          <option>
+            Reopened
+          </option>
+
+        </select>
+
+
+        <select
+          id="categoryFilter"
+          onchange="renderAll()">
+
+          <option value="">
+            All Categories
+          </option>
+
+          <option>
+            Plumbing
+          </option>
+
+          <option>
+            Electrical
+          </option>
+
+          <option>
+            Internet
+          </option>
+
+          <option>
+            Water Supply
+          </option>
+
+          <option>
+            Housekeeping
+          </option>
+
+          <option>
+            Maintenance
+          </option>
+
+          <option>
+            Security
+          </option>
+
+          <option>
+            Other
+          </option>
+
+        </select>
+
+
+        <select
+          id="priorityFilter"
+          onchange="renderAll()">
+
+          <option value="">
+            All Priorities
+          </option>
+
+          <option>
+            Low
+          </option>
+
+          <option>
+            Medium
+          </option>
+
+          <option>
+            High
+          </option>
+
+          <option>
+            Urgent
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div id="complaintList">
+
+        <p class="loading">
+          Loading complaints from server...
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- BUILDING -->
+
+    <section id="building">
+
+      <h2>
+        Building Digital Map
+      </h2>
+
+      <p class="muted">
+        Lime: safe | Gold: active |
+        Orange: high | Coral: urgent
+      </p>
+
+
+      <h3>
+        Block A
+      </h3>
+
+      <div
+        class="room-grid"
+        id="blockA">
+      </div>
+
+
+      <h3>
+        Block B
+      </h3>
+
+      <div
+        class="room-grid"
+        id="blockB">
+      </div>
+
+
+      <h3>
+        Block C
+      </h3>
+
+      <div
+        class="room-grid"
+        id="blockC">
+      </div>
+
+
+      <div
+        class="smart-box"
+        id="roomDetails"
+        style="margin-top:15px;">
+
+        Click a room to see complaint details.
+
+      </div>
+
+
+      <h3>
+        Complaint Heatmap & Risk Analysis
+      </h3>
+
+      <div
+        id="heatmap"
+        style="margin-bottom:10px;">
+      </div>
+
+      <p
+        id="riskArea"
+        style="font-weight:bold;color:var(--gold);">
+      </p>
+
+    </section>
+
+
+    <!-- EMERGENCY -->
+
+    <section id="emergency">
+
+      <h2>
+        ⚠ Emergency Center
+      </h2>
+
+      <p>
+        Active Emergency:
+        <b id="emergencyCount">
+          0
+        </b>
+      </p>
+
+      <p>
+        Potentially Affected Rooms:
+        <b id="affectedCount">
+          0
+        </b>
+      </p>
+
+      <p>
+        Critical Blocks:
+        <b id="criticalBlocks">
+          0
+        </b>
+      </p>
+
+      <div id="emergencyList"></div>
+
+    </section>
+
+
+    <!-- MAINTENANCE -->
+
+    <section id="maintenance">
+
+      <h2>
+        Technician Management
+      </h2>
+
+      <div id="technicianStatusList">
+
+        <p>
+          <b>Raj Kumar</b>
+          — Electrical Specialist —
+          <span style="color:var(--lime)">
+            Available
+          </span>
+        </p>
+
+        <p>
+          <b>Arun</b>
+          — Plumbing Specialist —
+          <span style="color:var(--gold)">
+            Busy
+          </span>
+        </p>
+
+        <p>
+          <b>Priya</b>
+          — Internet Specialist —
+          <span style="color:var(--lime)">
+            Available
+          </span>
+        </p>
+
+      </div>
+
+
+      <h3>
+        🏆 Maintenance Team Leaderboard
+      </h3>
+
+      <ol>
+
+        <li>
+          Raj Kumar — 94% Resolution Rate
+        </li>
+
+        <li>
+          Priya — 89% Resolution Rate
+        </li>
+
+        <li>
+          Arun — 82% Resolution Rate
+        </li>
+
+      </ol>
+
+    </section>
+
+
+    <!-- ANALYTICS -->
+
+    <section id="analytics">
+
+      <h2>
+        Analytics and Pattern Analysis
+      </h2>
+
+      <div id="analyticsData"></div>
+
+    </section>
+
+  </main>
+
+
+  <!-- DETAIL MODAL -->
+
+  <div
+    id="detailModal"
+    class="modal">
+
+    <div class="modal-content">
+
+      <h2 id="modalTitle">
+        Complaint Details
+      </h2>
+
+      <div id="modalBody"></div>
+
+      <button
+        class="aqua-button"
+        style="margin-top:15px;"
+        onclick="closeModal()">
+
+        Close
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div id="toast"></div>
+
+
+  <script>
+
+    // =====================================================
+    // SMARTRESOLVE 360
+    // BACKEND SYNCHRONIZED FRONTEND
+    // =====================================================
+
+    const API_BASE =
+      "http://localhost:3000";
+
+    let complaints = [];
+
+    let editingId = null;
+
+    let uploadedImageBase64 = "";
+
+
+    // =====================================================
+    // DOM READY
+    // =====================================================
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      async function () {
+
+        document.getElementById("date").value =
+          getTodayDate();
+
+        updateLiveTime();
+
+        setInterval(
+          updateLiveTime,
+          1000
+        );
+
+        setupSmartDetection();
+
+        await loadComplaints();
+
+      }
+    );
+
+
+    // =====================================================
+    // TODAY DATE
+    // =====================================================
+
+    function getTodayDate() {
+
+      const now =
+        new Date();
+
+      const year =
+        now.getFullYear();
+
+      const month =
+        String(
+          now.getMonth() + 1
+        ).padStart(2, "0");
+
+      const day =
+        String(
+          now.getDate()
+        ).padStart(2, "0");
+
+      return `${year}-${month}-${day}`;
+
+    }
+
+
+    // =====================================================
+    // LIVE CLOCK
+    // =====================================================
+
+    function updateLiveTime() {
+
+      document.getElementById(
+        "liveTime"
+      ).innerText =
+        new Date().toLocaleString();
+
+    }
+
+
+    // =====================================================
+    // TOAST
+    // =====================================================
+
+    function showToast(message) {
+
+      const toast =
+        document.getElementById(
+          "toast"
+        );
+
+      toast.innerHTML =
+        message;
+
+      toast.style.display =
+        "block";
+
+      clearTimeout(
+        window.toastTimer
+      );
+
+      window.toastTimer =
+        setTimeout(
+          function () {
+
+            toast.style.display =
+              "none";
+
+          },
+          3500
+        );
+
+    }
+
+
+    // =====================================================
+    // SERVER STATUS
+    // =====================================================
+
+    function setServerStatus(online) {
+
+      const element =
+        document.getElementById(
+          "serverStatus"
+        );
+
+      if (online) {
+
+        element.className =
+          "server-status server-online";
+
+        element.innerText =
+          "● Backend Connected";
+
+      } else {
+
+        element.className =
+          "server-status server-offline";
+
+        element.innerText =
+          "● Backend Offline";
+
+      }
+
+    }
+
+
+    // =====================================================
+    // LOAD ALL COMPLAINTS FROM SERVER
+    // =====================================================
+
+    async function loadComplaints(
+      showMessage = false
+    ) {
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/complaints`,
+            {
+              method: "GET"
+            }
+          );
+
+        if (!response.ok) {
+
+          throw new Error(
+            `HTTP ${response.status}`
+          );
+
+        }
+
+        const result =
+          await response.json();
+
+        if (!result.success) {
+
+          throw new Error(
+            result.message ||
+            "Could not load complaints."
+          );
+
+        }
+
+        complaints =
+          Array.isArray(
+            result.complaints
+          )
+            ? result.complaints
+            : [];
+
+        setServerStatus(true);
+
+        renderAll();
+
+        if (showMessage) {
+
+          showToast(
+            `✅ Loaded ${complaints.length} complaint(s) from server.`
+          );
+
+        }
+
+        return true;
+
+      } catch (error) {
+
+        console.error(
+          "GET complaints error:",
+          error
+        );
+
+        complaints = [];
+
+        setServerStatus(false);
+
+        renderAll();
+
+        document.getElementById(
+          "complaintList"
+        ).innerHTML = `
+
+          <div class="emergency-box"
+               style="display:block;">
+
+            ❌ <b>Cannot connect to backend.</b>
+
+            <br><br>
+
+            Make sure your server is running:
+
+            <br>
+
+            <b>node server.js</b>
+
+            <br><br>
+
+            Backend expected at:
+
+            <br>
+
+            <b>${API_BASE}</b>
+
+          </div>
+
+        `;
+
+        return false;
+
+      }
+
+    }
+
+
+    // =====================================================
+    // GET ONE COMPLAINT
+    // =====================================================
+
+    async function getComplaintFromServer(id) {
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/complaints/${id}`
+          );
+
+        const result =
+          await response.json();
+
+        if (
+          !response.ok ||
+          !result.success
+        ) {
+
+          throw new Error(
+            result.message ||
+            "Complaint not found."
+          );
+
+        }
+
+        return result.complaint;
+
+      } catch (error) {
+
+        console.error(
+          "GET complaint error:",
+          error
+        );
+
+        showToast(
+          "❌ Could not retrieve complaint from server."
+        );
+
+        return null;
+
+      }
+
+    }
+
+
+    // =====================================================
+    // RENDER EVERYTHING
+    // =====================================================
+
+    function renderAll() {
+
+      renderComplaints();
+
+      renderDashboard();
+
+      renderBuilding();
+
+      renderEmergency();
+
+      renderAnalytics();
+
+    }
+
+
+    // =====================================================
+    // SMART DETECTION
+    // =====================================================
+
+    function setupSmartDetection() {
+
+      document
+        .getElementById("description")
+        .addEventListener(
+          "input",
+          function () {
+
+            const text =
+              this.value.toLowerCase();
+
+            let category =
+              "Other";
+
+            let priority =
+              "Low";
+
+            let emergency =
+              false;
+
+
+            if (
+              text.includes("leak") ||
+              text.includes("pipe") ||
+              text.includes("tap")
+            ) {
+
+              category =
+                "Plumbing";
+
+              priority =
+                "High";
+
+            } else if (
+              text.includes("wifi") ||
+              text.includes("internet") ||
+              text.includes("router")
+            ) {
+
+              category =
+                "Internet";
+
+              priority =
+                "Medium";
+
+            } else if (
+              text.includes("no water") ||
+              text.includes("water supply")
+            ) {
+
+              category =
+                "Water Supply";
+
+              priority =
+                "High";
+
+            } else if (
+              text.includes("dirty") ||
+              text.includes("clean") ||
+              text.includes("trash")
+            ) {
+
+              category =
+                "Housekeeping";
+
+              priority =
+                "Low";
+
+            } else if (
+              text.includes("lift") ||
+              text.includes("elevator") ||
+              text.includes("door")
+            ) {
+
+              category =
+                "Maintenance";
+
+              priority =
+                "High";
+
+            }
+
+
+            if (
+              text.includes("spark") ||
+              text.includes("shock") ||
+              text.includes("switch")
+            ) {
+
+              category =
+                "Electrical";
+
+              priority =
+                "Urgent";
+
+              emergency =
+                true;
+
+            }
+
+
+            if (
+              text.includes("fire") ||
+              text.includes("gas") ||
+              text.includes("flood") ||
+              text.includes("dangerous") ||
+              text.includes("emergency")
+            ) {
+
+              priority =
+                "Urgent";
+
+              emergency =
+                true;
+
+            }
+
+
+            if (
+              category !== "Other"
+            ) {
+
+              document.getElementById(
+                "category"
+              ).value =
+                category;
+
+            }
+
+
+            document.getElementById(
+              "priority"
+            ).value =
+              priority;
+
+
+            document.getElementById(
+              "smartBox"
+            ).innerHTML =
+
+              "🧠 <b>Smart Rule-Based Detection</b><br>" +
+
+              "Suggested Category: <b>" +
+              category +
+              "</b><br>" +
+
+              "Suggested Priority: <b>" +
+              priority +
+              "</b>";
+
+
+            document.getElementById(
+              "emergencyBox"
+            ).style.display =
+              emergency
+                ? "block"
+                : "none";
+
+          }
+        );
+
+    }
+
+
+    // =====================================================
+    // FORM SUBMIT
+    // =====================================================
+
+    document
+      .getElementById("complaintForm")
+      .addEventListener(
+        "submit",
+        async function (event) {
+
+          event.preventDefault();
+
+          await submitComplaint();
+
+        }
+      );
+
+
+    // =====================================================
+    // SUBMIT / UPDATE
+    // =====================================================
+
+    async function submitComplaint() {
+
+      const formMessage =
+        document.getElementById(
+          "formMessage"
+        );
+
+      const submitBtn =
+        document.getElementById(
+          "submitBtn"
+        );
+
+
+      const name =
+        document.getElementById(
+          "name"
+        ).value.trim();
+
+
+      const room =
+        document.getElementById(
+          "room"
+        ).value
+          .toUpperCase()
+          .trim();
+
+
+      const phone =
+        document.getElementById(
+          "phone"
+        ).value.trim();
+
+
+      const category =
+        document.getElementById(
+          "category"
+        ).value;
+
+
+      const priority =
+        document.getElementById(
+          "priority"
+        ).value;
+
+
+      const description =
+        document.getElementById(
+          "description"
+        ).value.trim();
+
+
+      const date =
+        document.getElementById(
+          "date"
+        ).value;
+
+
+      const extra =
+        document.getElementById(
+          "extra"
+        ).value.trim();
+
+
+      // =================================================
+      // VALIDATION
+      // =================================================
+
+      if (!name) {
+
+        showFormError(
+          "❌ Please enter resident name."
+        );
+
+        return;
+
+      }
+
+
+      if (!room) {
+
+        showFormError(
+          "❌ Please enter room number."
+        );
+
+        return;
+
+      }
+
+
+      if (!/^\d{10}$/.test(phone)) {
+
+        showFormError(
+          "❌ Contact number must contain exactly 10 digits."
+        );
+
+        return;
+
+      }
+
+
+      if (!category) {
+
+        showFormError(
+          "❌ Please select a category."
+        );
+
+        return;
+
+      }
+
+
+      if (!priority) {
+
+        showFormError(
+          "❌ Please select a priority."
+        );
+
+        return;
+
+      }
+
+
+      if (description.length < 5) {
+
+        showFormError(
+          "❌ Description must have at least 5 characters."
+        );
+
+        return;
+
+      }
+
+
+      if (!date) {
+
+        showFormError(
+          "❌ Please select a date."
+        );
+
+        return;
+
+      }
+
+
+      // =================================================
+      // DUPLICATE CHECK
+      // =================================================
+
+      const duplicate =
+        complaints.find(
+          function (item) {
+
+            return (
+
+              String(item.room).toUpperCase() ===
+                room &&
+
+              item.category ===
+                category &&
+
+              item.status !==
+                "Resolved" &&
+
+              Number(item.id) !==
+                Number(editingId)
+
+            );
+
+          }
+        );
+
+
+      if (duplicate) {
+
+        const answer =
+          confirm(
+
+            "⚠ Similar complaint already exists.\n\n" +
+
+            "Room: " +
+            room +
+
+            "\nCategory: " +
+            category +
+
+            "\nExisting Complaint: #" +
+            duplicate.id +
+
+            "\n\n" +
+
+            "Press OK to submit anyway."
+
+          );
+
+
+        if (!answer) {
+
+          showFormError(
+            "⚠ Complaint submission cancelled because a similar complaint already exists."
+          );
+
+          return;
+
+        }
+
+      }
+
+
+      // =================================================
+      // EDIT EXISTING
+      // =================================================
+
+      if (editingId !== null) {
+
+        await updateComplaint(
+          editingId,
+          {
+            name,
+            room,
+            phone,
+            category,
+            priority,
+            description,
+            date,
+            extra,
+            ...(uploadedImageBase64
+              ? {
+                  photo:
+                    uploadedImageBase64
+                }
+              : {})
+          }
+        );
+
+        return;
+
+      }
+
+
+      // =================================================
+      // CREATE NEW
+      // =================================================
+
+      submitBtn.disabled =
+        true;
+
+      submitBtn.innerText =
+        "Submitting...";
+
+
+      formMessage.innerHTML =
+        `<span style="color:var(--aqua)">
+          ⏳ Sending complaint to server...
+        </span>`;
+
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/complaints`,
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify({
+
+                  name,
+
+                  room,
+
+                  phone,
+
+                  category,
+
+                  priority,
+
+                  description,
+
+                  date,
+
+                  extra,
+
+                  photo:
+                    uploadedImageBase64
+
+                })
+
+            }
+          );
+
+
+        const result =
+          await response.json();
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            result.message ||
+            `HTTP ${response.status}`
+          );
+
+        }
+
+
+        if (!result.success) {
+
+          throw new Error(
+            result.message ||
+            "Complaint could not be submitted."
+          );
+
+        }
+
+
+        setServerStatus(true);
+
+
+        formMessage.innerHTML =
+          `
+
+          <span style="color:var(--lime)">
+
+            ✅ Complaint submitted successfully!
+
+            Complaint ID:
+
+            <b>
+              #${result.complaint.id}
+            </b>
+
+          </span>
+
+          `;
+
+
+        showToast(
+          priority === "Urgent"
+            ? "🚨 Emergency complaint registered on server!"
+            : "✅ Complaint saved to server."
+        );
+
+
+        resetComplaintForm();
+
+
+        await loadComplaints();
+
+      } catch (error) {
+
+        console.error(
+          "POST complaint error:",
+          error
+        );
+
+
+        setServerStatus(false);
+
+
+        formMessage.innerHTML =
+          `
+
+          <span style="color:var(--coral)">
+
+            ❌ ${escapeHtml(
+              error.message ||
+              "Cannot connect to backend."
+            )}
+
+          </span>
+
+          `;
+
+
+        showToast(
+          "❌ Complaint was not saved to server."
+        );
+
+      } finally {
+
+        submitBtn.disabled =
+          false;
+
+        submitBtn.innerText =
+          "Submit / Update Complaint";
+
+      }
+
+    }
+
+
+    // =====================================================
+    // UPDATE COMPLAINT
+    // =====================================================
+
+    async function updateComplaint(
+      id,
+      data
+    ) {
+
+      const formMessage =
+        document.getElementById(
+          "formMessage"
+        );
+
+      const submitBtn =
+        document.getElementById(
+          "submitBtn"
+        );
+
+
+      submitBtn.disabled =
+        true;
+
+      submitBtn.innerText =
+        "Saving...";
+
+
+      formMessage.innerHTML =
+        `
+
+        <span style="color:var(--aqua)">
+
+          ⏳ Updating Complaint #${id} on server...
+
+        </span>
+
+        `;
+
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/complaints/${id}`,
+            {
+              method: "PUT",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify(data)
+
+            }
+          );
+
+
+        const result =
+          await response.json();
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            result.message ||
+            `HTTP ${response.status}`
+          );
+
+        }
+
+
+        if (!result.success) {
+
+          throw new Error(
+            result.message ||
+            "Complaint update failed."
+          );
+
+        }
+
+
+        setServerStatus(true);
+
+
+        formMessage.innerHTML =
+          `
+
+          <span style="color:var(--lime)">
+
+            ✅ Complaint #${id}
+            updated successfully on server.
+
+          </span>
+
+          `;
+
+
+        showToast(
+          `✅ Complaint #${id} updated.`
+        );
+
+
+        editingId =
+          null;
+
+
+        document.getElementById(
+          "formTitle"
+        ).innerText =
+          "Report a Complaint";
+
+
+        resetComplaintForm(
+          false
+        );
+
+
+        await loadComplaints();
+
+
+      } catch (error) {
+
+        console.error(
+          "PUT complaint error:",
+          error
+        );
+
+
+        formMessage.innerHTML =
+          `
+
+          <span style="color:var(--coral)">
+
+            ❌ ${escapeHtml(
+              error.message ||
+              "Update failed."
+            )}
+
+          </span>
+
+          `;
+
+
+        showToast(
+          "❌ Complaint update failed."
+        );
+
+      } finally {
+
+        submitBtn.disabled =
+          false;
+
+        submitBtn.innerText =
+          "Submit / Update Complaint";
+
+      }
+
+    }
+
+
+    // =====================================================
+    // DELETE COMPLAINT
+    // =====================================================
+
+    async function deleteComplaint(
+      id
+    ) {
+
+      const confirmed =
+        confirm(
+          `Are you sure you want to permanently delete Complaint #${id} from the server?`
+        );
+
+
+      if (!confirmed) {
+
+        return;
+
+      }
+
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/complaints/${id}`,
+            {
+              method: "DELETE"
+            }
+          );
+
+
+        const result =
+          await response.json();
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            result.message ||
+            `HTTP ${response.status}`
+          );
+
+        }
+
+
+        if (!result.success) {
+
+          throw new Error(
+            result.message ||
+            "Delete failed."
+          );
+
+        }
+
+
+        setServerStatus(true);
+
+
+        showToast(
+          `🗑 Complaint #${id} deleted from server.`
+        );
+
+
+        await loadComplaints();
+
+
+      } catch (error) {
+
+        console.error(
+          "DELETE error:",
+          error
+        );
+
+
+        showToast(
+          "❌ Complaint could not be deleted."
+        );
+
+      }
+
+    }
+
+
+    // =====================================================
+    // RESET SYSTEM DATA
+    // =====================================================
+
+    async function resetSystemData() {
+
+      const confirmed =
+        confirm(
+          "Reset all complaint data on the server back to the original demo data?"
+        );
+
+
+      if (!confirmed) {
+
+        return;
+
+      }
+
+
+      try {
+
+        showToast(
+          "⏳ Resetting server database..."
+        );
+
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/reset`,
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              }
+            }
+          );
+
+
+        const result =
+          await response.json();
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            result.message ||
+            `HTTP ${response.status}`
+          );
+
+        }
+
+
+        if (!result.success) {
+
+          throw new Error(
+            result.message ||
+            "Reset failed."
+          );
+
+        }
+
+
+        setServerStatus(true);
+
+
+        editingId =
+          null;
+
+        uploadedImageBase64 =
+          "";
+
+
+        resetComplaintForm();
+
+
+        document.getElementById(
+          "formTitle"
+        ).innerText =
+          "Report a Complaint";
+
+
+        showToast(
+          "✅ Server database reset successfully."
+        );
+
+
+        await loadComplaints();
+
+
+      } catch (error) {
+
+        console.error(
+          "RESET error:",
+          error
+        );
+
+
+        showToast(
+          "❌ Server reset failed."
+        );
+
+      }
+
+    }
+
+
+    // =====================================================
+    // STATUS CHANGE
+    // =====================================================
+
+    async function cycleStatus(
+      id
+    ) {
+
+      const item =
+        complaints.find(
+          c =>
+            Number(c.id) ===
+            Number(id)
+        );
+
+
+      if (!item) {
+
+        showToast(
+          "❌ Complaint not found."
+        );
+
+        return;
+
+      }
+
+
+      const sequence = [
+        "Pending",
+        "In Progress",
+        "Resolved",
+        "Reopened"
+      ];
+
+
+      const currentIndex =
+        sequence.indexOf(
+          item.status
+        );
+
+
+      const nextIndex =
+        currentIndex === -1
+          ? 0
+          : (
+              currentIndex + 1
+            ) % sequence.length;
+
+
+      const nextStatus =
+        sequence[nextIndex];
+
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/complaints/${id}`,
+            {
+              method: "PUT",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify({
+                  status:
+                    nextStatus
+                })
+            }
+          );
+
+
+        const result =
+          await response.json();
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            result.message ||
+            `HTTP ${response.status}`
+          );
+
+        }
+
+
+        if (!result.success) {
+
+          throw new Error(
+            result.message ||
+            "Status update failed."
+          );
+
+        }
+
+
+        setServerStatus(true);
+
+
+        showToast(
+          `Complaint #${id} status changed to ${nextStatus}`
+        );
+
+
+        await loadComplaints();
+
+
+      } catch (error) {
+
+        console.error(
+          "Status update error:",
+          error
+        );
+
+
+        showToast(
+          "❌ Status was not updated on server."
+        );
+
+      }
+
+    }
+
+
+    // =====================================================
+    // ASSIGN TECHNICIAN
+    // =====================================================
+
+    async function assignTechPrompt(
+      id
+    ) {
+
+      const item =
+        complaints.find(
+          c =>
+            Number(c.id) ===
+            Number(id)
+        );
+
+
+      if (!item) {
+
+        return;
+
+      }
+
+
+      const tech =
+        prompt(
+          "Enter Technician Name (e.g. Raj Kumar, Arun, Priya):",
+          item.technician ||
+          "Not Assigned"
+        );
+
+
+      if (
+        tech === null
+      ) {
+
+        return;
+
+      }
+
+
+      const technician =
+        tech.trim();
+
+
+      if (!technician) {
+
+        showToast(
+          "❌ Technician name cannot be empty."
+        );
+
+        return;
+
+      }
+
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_BASE}/api/complaints/${id}`,
+            {
+              method: "PUT",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify({
+                  technician
+                })
+            }
+          );
+
+
+        const result =
+          await response.json();
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            result.message ||
+            `HTTP ${response.status}`
+          );
+
+        }
+
+
+        if (!result.success) {
+
+          throw new Error(
+            result.message ||
+            "Technician assignment failed."
+          );
+
+        }
+
+
+        setServerStatus(true);
+
+
+        showToast(
+          `👷 ${technician} assigned to Complaint #${id}`
+        );
+
+
+        await loadComplaints();
+
+
+      } catch (error) {
+
+        console.error(
+          "Technician update error:",
+          error
+        );
+
+
+        showToast(
+          "❌ Technician assignment failed."
+        );
+
+      }
+
+    }
+
+
+    // =====================================================
+    // EDIT COMPLAINT
+    // =====================================================
+
+    function editComplaint(
+      id
+    ) {
+
+      const item =
+        complaints.find(
+          c =>
+            Number(c.id) ===
+            Number(id)
+        );
+
+
+      if (!item) {
+
+        showToast(
+          "❌ Complaint not found."
+        );
+
+        return;
+
+      }
+
+
+      editingId =
+        Number(id);
+
+
+      document.getElementById(
+        "name"
+      ).value =
+        item.name || "";
+
+
+      document.getElementById(
+        "room"
+      ).value =
+        item.room || "";
+
+
+      document.getElementById(
+        "phone"
+      ).value =
+        item.phone || "";
+
+
+      document.getElementById(
+        "category"
+      ).value =
+        item.category || "";
+
+
+      document.getElementById(
+        "priority"
+      ).value =
+        item.priority || "";
+
+
+      document.getElementById(
+        "description"
+      ).value =
+        item.description || "";
+
+
+      document.getElementById(
+        "date"
+      ).value =
+        item.date || "";
+
+
+      document.getElementById(
+        "extra"
+      ).value =
+        item.extra || "";
+
+
+      uploadedImageBase64 =
+        item.photo || "";
+
+
+      const preview =
+        document.getElementById(
+          "photoPreview"
+        );
+
+
+      if (item.photo) {
+
+        preview.src =
+          item.photo;
+
+        preview.style.display =
+          "block";
+
+      } else {
+
+        preview.style.display =
+          "none";
+
+      }
+
+
+      document.getElementById(
+        "formTitle"
+      ).innerHTML =
+        `Edit Complaint #${id}`;
+
+
+      document.getElementById(
+        "submitBtn"
+      ).innerText =
+        "Save Changes";
+
+
+      document.getElementById(
+        "formMessage"
+      ).innerHTML = "";
+
+
+      window.location.hash =
+        "complaints";
+
+    }
+
+
+    // =====================================================
+    // CANCEL EDIT WITH ESC / HELPER
+    // =====================================================
+
+    function resetComplaintForm(
+      clearMessage = true
+    ) {
+
+      const form =
+        document.getElementById(
+          "complaintForm"
+        );
+
+
+      form.reset();
+
+
+      editingId =
+        null;
+
+      uploadedImageBase64 =
+        "";
+
+
+      document.getElementById(
+        "date"
+      ).value =
+        getTodayDate();
+
+
+      document.getElementById(
+        "photoPreview"
+      ).style.display =
+        "none";
+
+
+      document.getElementById(
+        "emergencyBox"
+      ).style.display =
+        "none";
+
+
+      document.getElementById(
+        "smartBox"
+      ).innerHTML =
+        "🧠 Smart Rule-Based Detection: Type a description for suggestions.";
+
+
+      document.getElementById(
+        "formTitle"
+      ).innerText =
+        "Report a Complaint";
+
+
+      document.getElementById(
+        "submitBtn"
+      ).innerText =
+        "Submit / Update Complaint";
+
+
+      if (clearMessage) {
+
+        document.getElementById(
+          "formMessage"
+        ).innerHTML =
+          "";
+
+      }
+
+    }
+
+
+    // =====================================================
+    // RENDER COMPLAINTS
+    // =====================================================
+
+    function renderComplaints() {
+
+      const list =
+        document.getElementById(
+          "complaintList"
+        );
+
+
+      const search =
+        document.getElementById(
+          "search"
+        ).value
+          .toLowerCase()
+          .trim();
+
+
+      const status =
+        document.getElementById(
+          "statusFilter"
+        ).value;
+
+
+      const category =
+        document.getElementById(
+          "categoryFilter"
+        ).value;
+
+
+      const priority =
+        document.getElementById(
+          "priorityFilter"
+        ).value;
+
+
+      list.innerHTML =
+        "";
+
+
+      const filtered =
+        complaints.filter(
+          function (item) {
+
+            const searchText =
+
+              (
+
+                item.id +
+
+                " " +
+
+                (item.name || "") +
+
+                " " +
+
+                (item.room || "") +
+
+                " " +
+
+                (item.category || "") +
+
+                " " +
+
+                (item.description || "")
+
+              ).toLowerCase();
+
+
+            return (
+
+              searchText.includes(
+                search
+              ) &&
+
+              (
+                status === "" ||
+                item.status === status
+              ) &&
+
+              (
+                category === "" ||
+                item.category === category
+              ) &&
+
+              (
+                priority === "" ||
+                item.priority === priority
+              )
+
+            );
+
+          }
+        );
+
+
+      if (
+        filtered.length === 0
+      ) {
+
+        list.innerHTML =
+          `
+
+          <p class="muted">
+
+            No complaints found matching criteria.
+
+          </p>
+
+          `;
+
+        return;
+
+      }
+
+
+      filtered.forEach(
+        function (item) {
+
+          const card =
+            document.createElement(
+              "article"
+            );
+
+
+          card.className =
+            "complaint " +
+
+            (
+              item.priority ===
+              "Urgent"
+
+                ? "urgent-card"
+
+                : ""
+            );
+
+
+          const safePriority =
+            escapeHtml(
+              item.priority ||
+              "Low"
+            );
+
+
+          const priorityClass =
+            String(
+              item.priority ||
+              "Low"
+            ).toLowerCase();
+
+
+          card.innerHTML = `
+
+            <h3>
+
+              Complaint #${escapeHtml(
+                item.id
+              )}
+
+              —
+
+              Room ${escapeHtml(
+                item.room ||
+                ""
+              )}
+
+            </h3>
+
+
+            <p>
+
+              <span
+                class="badge ${priorityClass}">
+
+                ${safePriority}
+
+              </span>
+
+
+              <b>
+                Category:
+              </b>
+
+              ${escapeHtml(
+                item.category ||
+                ""
+              )}
+
+
+              |
+
+
+              <b>
+                Status:
+              </b>
+
+              ${escapeHtml(
+                item.status ||
+                ""
+              )}
+
+
+              |
+
+
+              <b>
+                Tech:
+              </b>
+
+              ${escapeHtml(
+                item.technician ||
+                "Not Assigned"
+              )}
+
+            </p>
+
+
+            <p class="muted">
+
+              ${escapeHtml(
+                item.description ||
+                ""
+              )}
+
+            </p>
+
+
+            <p>
+
+              <small>
+
+                Reported by:
+
+                ${escapeHtml(
+                  item.name ||
+                  ""
+                )}
+
+                (${escapeHtml(
+                  item.phone ||
+                  ""
+                )})
+
+                on
+
+                ${escapeHtml(
+                  item.date ||
+                  ""
+                )}
+
+              </small>
+
+            </p>
+
+
+            <div>
+
+              <button
+                class="action-btn aqua-button"
+                onclick="viewDetails(${Number(item.id)})">
+
+                Details
+
+              </button>
+
+
+              <button
+                class="action-btn"
+                onclick="editComplaint(${Number(item.id)})">
+
+                Edit
+
+              </button>
+
+
+              <button
+                class="action-btn aqua-button"
+                onclick="cycleStatus(${Number(item.id)})">
+
+                Next Status
+
+              </button>
+
+
+              <button
+                class="action-btn"
+                onclick="assignTechPrompt(${Number(item.id)})">
+
+                Assign Tech
+
+              </button>
+
+
+              <button
+                class="action-btn red-button"
+                onclick="deleteComplaint(${Number(item.id)})">
+
+                Delete
+
+              </button>
+
+            </div>
+
+          `;
+
+
+          list.appendChild(
+            card
+          );
+
+        }
+      );
+
+    }
+
+
+    // =====================================================
+    // DASHBOARD
+    // =====================================================
+
+    function renderDashboard() {
+
+      const total =
+        complaints.length;
+
+
+      const pending =
+        complaints.filter(
+          c =>
+            c.status ===
+            "Pending"
+        ).length;
+
+
+      const progress =
+        complaints.filter(
+          c =>
+            c.status ===
+            "In Progress"
+        ).length;
+
+
+      const resolved =
+        complaints.filter(
+          c =>
+            c.status ===
+            "Resolved"
+        ).length;
+
+
+      const urgent =
+        complaints.filter(
+          c =>
+            c.priority ===
+            "Urgent" &&
+            c.status !==
+            "Resolved"
+        ).length;
+
+
+      const reopened =
+        complaints.filter(
+          c =>
+            c.status ===
+            "Reopened"
+        ).length;
+
+
+      const today =
+        new Date();
+
+
+      const slaBreached =
+        complaints.filter(
+          function (c) {
+
+            if (
+              c.status ===
+              "Resolved"
+            ) {
+
+              return false;
+
+            }
+
+
+            const diffDays =
+              (
+                today -
+                new Date(
+                  c.date
+                )
+              ) /
+              (
+                1000 *
+                60 *
+                60 *
+                24
+              );
+
+
+            return (
+
+              (
+                c.priority ===
+                "Urgent" &&
+                diffDays > 1
+              ) ||
+
+              (
+                c.priority ===
+                "High" &&
+                diffDays > 2
+              )
+
+            );
+
+          }
+        ).length;
+
+
+      document.getElementById(
+        "total"
+      ).innerText =
+        total;
+
+
+      document.getElementById(
+        "pending"
+      ).innerText =
+        pending;
+
+
+      document.getElementById(
+        "progress"
+      ).innerText =
+        progress;
+
+
+      document.getElementById(
+        "resolved"
+      ).innerText =
+        resolved;
+
+
+      document.getElementById(
+        "urgentCount"
+      ).innerText =
+        urgent;
+
+
+      document.getElementById(
+        "sla"
+      ).innerText =
+        slaBreached;
+
+
+      document.getElementById(
+        "reopened"
+      ).innerText =
+        reopened;
+
+
+      let health =
+        100 -
+        pending * 5 -
+        urgent * 15 -
+        slaBreached * 10;
+
+
+      health =
+        Math.max(
+          0,
+          health
+        );
+
+
+      const healthCircle =
+        document.getElementById(
+          "healthCircle"
+        );
+
+
+      healthCircle.innerHTML =
+        `${health}<br><small>/ 100</small>`;
+
+
+      const healthColor =
+        health > 75
+          ? "var(--lime)"
+          : health > 45
+            ? "var(--gold)"
+            : "var(--coral)";
+
+
+      healthCircle.style.borderColor =
+        healthColor;
+
+
+      healthCircle.style.color =
+        healthColor;
+
+
+      let insight =
+        "🧠 Smart Insight: Operating smoothly.";
+
+
+      if (
+        urgent > 0
+      ) {
+
+        insight =
+          `🧠 Smart Insight: Attention! ${urgent} active urgent complaint(s).`;
+
+      } else if (
+        pending > 3
+      ) {
+
+        insight =
+          "🧠 Smart Insight: Backlog build-up detected in pending queue.";
+
+      }
+
+
+      document.getElementById(
+        "insight"
+      ).innerText =
+        insight;
+
+
+      const plumbingCount =
+        complaints.filter(
+          c =>
+            c.category ===
+            "Plumbing"
+        ).length;
+
+
+      let forecast =
+        "🔮 Basic Forecast: Risk levels low for upcoming week.";
+
+
+      if (
+        plumbingCount >= 2
+      ) {
+
+        forecast =
+          "🔮 Basic Forecast: High plumbing issue frequency. Inspect main riser pipes.";
+
+      }
+
+
+      document.getElementById(
+        "forecast"
+      ).innerText =
+        forecast;
+
+    }
+
+
+    // =====================================================
+    // BUILDING MAP
+    // =====================================================
+
+    function renderBuilding() {
+
+      const blocks = {
+
+        blockA: [
+          "A-101",
+          "A-102",
+          "A-201",
+          "A-203",
+          "A-301",
+          "A-302"
+        ],
+
+        blockB: [
+          "B-101",
+          "B-102",
+          "B-201",
+          "B-202",
+          "B-301",
+          "B-302"
+        ],
+
+        blockC: [
+          "C-101",
+          "C-202",
+          "C-301",
+          "C-401",
+          "C-402",
+          "C-403"
+        ]
+
+      };
+
+
+      for (
+        const blockKey in blocks
+      ) {
+
+        const grid =
+          document.getElementById(
+            blockKey
+          );
+
+
+        grid.innerHTML =
+          "";
+
+
+        blocks[
+          blockKey
+        ].forEach(
+          function (roomNo) {
+
+            const roomComplaints =
+              complaints.filter(
+                c =>
+
+                  String(
+                    c.room ||
+                    ""
+                  ).toUpperCase() ===
+                  roomNo &&
+
+                  c.status !==
+                  "Resolved"
+              );
+
+
+            let statusClass =
+              "safe";
+
+
+            if (
+              roomComplaints.some(
+                c =>
+                  c.priority ===
+                  "Urgent"
+              )
+            ) {
+
+              statusClass =
+                "urgent-room";
+
+            } else if (
+              roomComplaints.some(
+                c =>
+                  c.priority ===
+                  "High"
+              )
+            ) {
+
+              statusClass =
+                "high-room";
+
+            } else if (
+              roomComplaints.length >
+              0
+            ) {
+
+              statusClass =
+                "active";
+
+            }
+
+
+            const roomDiv =
+              document.createElement(
+                "div"
+              );
+
+
+            roomDiv.className =
+              `room ${statusClass}`;
+
+
+            roomDiv.innerText =
+              roomNo;
+
+
+            roomDiv.onclick =
+              function () {
+
+                showRoomDetails(
+                  roomNo,
+                  roomComplaints
+                );
+
+              };
+
+
+            grid.appendChild(
+              roomDiv
+            );
+
+          }
+        );
+
+      }
+
+
+      const counts = {};
+
+
+      complaints.forEach(
+        function (c) {
+
+          const block =
+            String(
+              c.room ||
+              ""
+            )
+              .split("-")[0]
+              .toUpperCase();
+
+
+          if (block) {
+
+            counts[block] =
+              (
+                counts[block] ||
+                0
+              ) + 1;
+
+          }
+
+        }
+      );
+
+
+      const blockNames =
+        [
+          "A",
+          "B",
+          "C"
+        ];
+
+
+      let highestBlock =
+        "None";
+
+
+      let highestCount =
+        0;
+
+
+      blockNames.forEach(
+        function (block) {
+
+          const count =
+            counts[block] ||
+            0;
+
+
+          if (
+            count >
+            highestCount
+          ) {
+
+            highestCount =
+              count;
+
+            highestBlock =
+              block;
+
+          }
+
+        }
+      );
+
+
+      document.getElementById(
+        "heatmap"
+      ).innerText =
+
+        `Total issues logged per block: ` +
+
+        `Block A: ${
+          counts["A"] || 0
+        } | ` +
+
+        `Block B: ${
+          counts["B"] || 0
+        } | ` +
+
+        `Block C: ${
+          counts["C"] || 0
+        }`;
+
+
+      document.getElementById(
+        "riskArea"
+      ).innerText =
+
+        highestBlock !==
+        "None"
+
+          ? `🔥 High-Risk Area: Block ${highestBlock} has highest issue density.`
+
+          : "";
+
+    }
+
+
+    // =====================================================
+    // ROOM DETAILS
+    // =====================================================
+
+    function showRoomDetails(
+      roomNo,
+      roomComplaints
+    ) {
+
+      const details =
+        document.getElementById(
+          "roomDetails"
+        );
+
+
+      if (
+        roomComplaints.length ===
+        0
+      ) {
+
+        details.innerHTML =
+
+          `<b>Room ${escapeHtml(
+            roomNo
+          )}:</b> No active issues reported. Room is safe!`;
+
+        return;
+
+      }
+
+
+      const info =
+        roomComplaints
+          .map(
+            c =>
+
+              `#${escapeHtml(
+                c.id
+              )} [${escapeHtml(
+                c.priority
+              )}] ` +
+
+              `${escapeHtml(
+                c.category
+              )}: ` +
+
+              `${escapeHtml(
+                c.description
+              )}`
+
+          )
+          .join(
+            "<br>"
+          );
+
+
+      details.innerHTML =
+
+        `<b>Room ${escapeHtml(
+          roomNo
+        )} Active Complaints:</b><br>` +
+
+        info;
+
+    }
+
+
+    // =====================================================
+    // EMERGENCY
+    // =====================================================
+
+    function renderEmergency() {
+
+      const emergencies =
+        complaints.filter(
+          c =>
+            c.priority ===
+            "Urgent" &&
+            c.status !==
+            "Resolved"
+        );
+
+
+      document.getElementById(
+        "emergencyCount"
+      ).innerText =
+        emergencies.length;
+
+
+      document.getElementById(
+        "affectedCount"
+      ).innerText =
+        emergencies.length *
+        2;
+
+
+      const criticalBlocks =
+        [
+          ...new Set(
+            emergencies
+              .map(
+                c =>
+                  String(
+                    c.room ||
+                    ""
+                  )
+                    .split("-")[0]
+                    .toUpperCase()
+              )
+              .filter(Boolean)
+          )
+        ];
+
+
+      document.getElementById(
+        "criticalBlocks"
+      ).innerText =
+
+        criticalBlocks.length >
+        0
+
+          ? criticalBlocks.join(
+              ", "
+            )
+
+          : "0";
+
+
+      const list =
+        document.getElementById(
+          "emergencyList"
+        );
+
+
+      list.innerHTML =
+        "";
+
+
+      if (
+        emergencies.length ===
+        0
+      ) {
+
+        list.innerHTML =
+
+          `<p class="muted">
+            No active critical emergencies detected.
+          </p>`;
+
+        return;
+
+      }
+
+
+      emergencies.forEach(
+        function (e) {
+
+          list.innerHTML += `
+
+            <div
+              class="smart-box"
+              style="
+                background:#491522;
+                border-left-color:var(--coral);
+              ">
+
+              🚨
+
+              <b>
+                EMERGENCY #${escapeHtml(
+                  e.id
+                )}
+
+                -
+                Room ${escapeHtml(
+                  e.room
+                )}
+              </b>
+
+              <br><br>
+
+              Issue:
+              ${escapeHtml(
+                e.description
+              )}
+
+              <br><br>
+
+              <small>
+
+                Contact:
+                ${escapeHtml(
+                  e.name
+                )}
+
+                (${escapeHtml(
+                  e.phone
+                )})
+
+              </small>
+
+            </div>
+
+          `;
+
+        }
+      );
+
+    }
+
+
+    // =====================================================
+    // ANALYTICS
+    // =====================================================
+
+    function renderAnalytics() {
+
+      const catCounts = {};
+
+
+      complaints.forEach(
+        function (c) {
+
+          const category =
+            c.category ||
+            "Other";
+
+
+          catCounts[
+            category
+          ] =
+
+            (
+              catCounts[
+                category
+              ] ||
+              0
+            ) + 1;
+
+        }
+      );
+
+
+      const catSummary =
+        Object.keys(
+          catCounts
+        )
+          .map(
+            k =>
+              `${escapeHtml(
+                k
+              )}: ${catCounts[k]}`
+          )
+          .join(
+            " | "
+          );
+
+
+      const resolvedCount =
+        complaints.filter(
+          c =>
+            c.status ===
+            "Resolved"
+        ).length;
+
+
+      const resolutionRate =
+        complaints.length
+
+          ? Math.round(
+              (
+                resolvedCount /
+                complaints.length
+              ) * 100
+            )
+
+          : 100;
+
+
+      document.getElementById(
+        "analyticsData"
+      ).innerHTML = `
+
+        <p>
+
+          <b>
+            Category Breakdown:
+          </b>
+
+          ${
+            catSummary ||
+            "No data yet"
+          }
+
+        </p>
+
+
+        <p>
+
+          <b>
+            System Efficiency:
+          </b>
+
+          ${resolutionRate}%
+          resolution rate
+
+        </p>
+
+      `;
+
+    }
+
+
+    // =====================================================
+    // VIEW DETAILS
+    // =====================================================
+
+    async function viewDetails(
+      id
+    ) {
+
+      const item =
+        await getComplaintFromServer(
+          id
+        );
+
+
+      if (!item) {
+
+        return;
+
+      }
+
+
+      document.getElementById(
+        "modalTitle"
+      ).innerText =
+        `Complaint #${item.id} Details`;
+
+
+      document.getElementById(
+        "modalBody"
+      ).innerHTML = `
+
+        <p>
+
+          <b>
+            Resident Name:
+          </b>
+
+          ${escapeHtml(
+            item.name
+          )}
+
+        </p>
+
+
+        <p>
+
+          <b>
+            Room Number:
+          </b>
+
+          ${escapeHtml(
+            item.room
+          )}
+
+        </p>
+
+
+        <p>
+
+          <b>
+            Phone:
+          </b>
+
+          ${escapeHtml(
+            item.phone
+          )}
+
+        </p>
+
+
+        <p>
+
+          <b>
+            Category:
+          </b>
+
+          ${escapeHtml(
+            item.category
+          )}
+
+        </p>
+
+
+        <p>
+
+          <b>
+            Priority:
+          </b>
+
+          <span
+            class="badge ${String(
+              item.priority ||
+              "Low"
+            ).toLowerCase()}">
+
+            ${escapeHtml(
+              item.priority
+            )}
+
+          </span>
+
+        </p>
+
+
+        <p>
+
+          <b>
+            Status:
+          </b>
+
+          ${escapeHtml(
+            item.status
+          )}
+
+        </p>
+
+
+        <p>
+
+          <b>
+            Assigned Technician:
+          </b>
+
+          ${escapeHtml(
+            item.technician ||
+            "Not Assigned"
+          )}
+
+        </p>
+
+
+        <p>
+
+          <b>
+            Date Reported:
+          </b>
+
+          ${escapeHtml(
+            item.date
+          )}
+
+        </p>
+
+
+        ${
+          item.extra
+
+            ? `
+
+              <p>
+
+                <b>
+                  Additional Information:
+                </b>
+
+                ${escapeHtml(
+                  item.extra
+                )}
+
+              </p>
+
+            `
+
+            : ""
+        }
+
+
+        <p>
+
+          <b>
+            Description:
+          </b>
+
+          ${escapeHtml(
+            item.description
+          )}
+
+        </p>
+
+
+        ${
+          item.photo
+
+            ? `
+
+              <p>
+
+                <b>
+                  Evidence:
+                </b>
+
+                <br>
+
+                <img
+                  src="${item.photo}"
+                  style="
+                    max-width:100%;
+                    max-height:400px;
+                    border-radius:8px;
+                    margin-top:10px;
+                  "
+                  alt="Complaint evidence">
+
+              </p>
+
+            `
+
+            : ""
+        }
+
+      `;
+
+
+      document.getElementById(
+        "detailModal"
+      ).style.display =
+        "flex";
+
+    }
+
+
+    // =====================================================
+    // CLOSE MODAL
+    // =====================================================
+
+    function closeModal() {
+
+      document.getElementById(
+        "detailModal"
+      ).style.display =
+        "none";
+
+    }
+
+
+    document
+      .getElementById(
+        "detailModal"
+      )
+      .addEventListener(
+        "click",
+        function (event) {
+
+          if (
+            event.target ===
+            this
+          ) {
+
+            closeModal();
+
+          }
+
+        }
+      );
+
+
+    // =====================================================
+    // IMAGE PREVIEW
+    // =====================================================
+
+    function previewImage(
+      event
+    ) {
+
+      const file =
+        event.target.files[0];
+
+
+      if (!file) {
+
+        return;
+
+      }
+
+
+      if (
+        !file.type.startsWith(
+          "image/"
+        )
+      ) {
+
+        showToast(
+          "❌ Please select an image file."
+        );
+
+        return;
+
+      }
+
+
+      const reader =
+        new FileReader();
+
+
+      reader.onload =
+        function (e) {
+
+          uploadedImageBase64 =
+            e.target.result;
+
+
+          const preview =
+            document.getElementById(
+              "photoPreview"
+            );
+
+
+          preview.src =
+            uploadedImageBase64;
+
+
+          preview.style.display =
+            "block";
+
+        };
+
+
+      reader.onerror =
+        function () {
+
+          showToast(
+            "❌ Could not read image."
+          );
+
+        };
+
+
+      reader.readAsDataURL(
+        file
+      );
+
+    }
+
+
+    // =====================================================
+    // VOICE
+    // =====================================================
+
+    function startVoice() {
+
+      if (
+        "webkitSpeechRecognition" in
+          window ||
+        "SpeechRecognition" in
+          window
+      ) {
+
+        const SpeechRecognition =
+          window.SpeechRecognition ||
+          window.webkitSpeechRecognition;
+
+
+        const recognition =
+          new SpeechRecognition();
+
+
+        recognition.lang =
+          "en-US";
+
+
+        recognition.interimResults =
+          false;
+
+
+        recognition.maxAlternatives =
+          1;
+
+
+        showToast(
+          "🎙 Listening... Speak your complaint now."
+        );
+
+
+        recognition.onresult =
+          function (event) {
+
+            const text =
+              event.results[0][0]
+                .transcript;
+
+
+            const description =
+              document.getElementById(
+                "description"
+              );
+
+
+            description.value =
+              text;
+
+
+            description.dispatchEvent(
+              new Event(
+                "input"
+              )
+            );
+
+
+            showToast(
+              "🎙 Voice captured successfully!"
+            );
+
+          };
+
+
+        recognition.onerror =
+          function (event) {
+
+            console.error(
+              "Speech recognition error:",
+              event
+            );
+
+
+            showToast(
+              "❌ Speech recognition failed or permission denied."
+            );
+
+          };
+
+
+        try {
+
+          recognition.start();
+
+        } catch (error) {
+
+          console.error(
+            error
+          );
+
+          showToast(
+            "❌ Could not start microphone."
+          );
+
+        }
+
+      } else {
+
+        alert(
+          "Speech recognition is not supported in this browser. Please type description manually."
+        );
+
+      }
+
+    }
+
+
+    // =====================================================
+    // QR DEMO
+    // =====================================================
+
+    function scanQR() {
+
+      const mockRooms = [
+
+        "A-101",
+        "B-201",
+        "C-301",
+        "A-203",
+        "B-102"
+
+      ];
+
+
+      const randomRoom =
+        mockRooms[
+          Math.floor(
+            Math.random() *
+            mockRooms.length
+          )
+        ];
+
+
+      document.getElementById(
+        "room"
+      ).value =
+        randomRoom;
+
+
+      showToast(
+        `📷 QR Scanned! Room filled: ${randomRoom}`
+      );
+
+    }
+
+
+    // =====================================================
+    // LANGUAGE
+    // =====================================================
+
+    function changeLanguage(
+      lang
+    ) {
+
+      if (
+        lang ===
+        "Hindi"
+      ) {
+
+        document.getElementById(
+          "title"
+        ).innerText =
+          "इमारत नियंत्रण केंद्र";
+
+
+        showToast(
+          "भाषा बदलकर हिंदी की गई"
+        );
+
+
+      } else if (
+        lang ===
+        "Kannada"
+      ) {
+
+        document.getElementById(
+          "title"
+        ).innerText =
+          "ಕಟ್ಟಡ ನಿಯಂತ್ರಣ ಕೇಂದ್ರ";
+
+
+        showToast(
+          "ಭಾಷೆಯನ್ನು ಕನ್ನಡಕ್ಕೆ ಬದಲಾಯಿಸಲಾಗಿದೆ"
+        );
+
+
+      } else {
+
+        document.getElementById(
+          "title"
+        ).innerText =
+          "Building Command Center";
+
+
+        showToast(
+          "Language set to English"
+        );
+
+      }
+
+    }
+
+
+    // =====================================================
+    // FORM ERROR
+    // =====================================================
+
+    function showFormError(
+      message
+    ) {
+
+      document.getElementById(
+        "formMessage"
+      ).innerHTML =
+
+        `<span style="color:var(--coral)">
+          ${escapeHtml(message)}
+        </span>`;
+
+    }
+
+
+    // =====================================================
+    // HTML ESCAPE
+    // Prevent complaint text from becoming HTML
+    // =====================================================
+
+    function escapeHtml(
+      value
+    ) {
+
+      return String(
+        value ?? ""
+      )
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
+
+
+    // =====================================================
+    // SEARCH ENTER SUPPORT
+    // =====================================================
+
+    document
+      .getElementById(
+        "search"
+      )
+      .addEventListener(
+        "keydown",
+        function (event) {
+
+          if (
+            event.key ===
+            "Enter"
+          ) {
+
+            event.preventDefault();
+
+            renderAll();
+
+          }
+
+        }
+      );
+
+
+    // =====================================================
+    // ESCAPE CLOSE MODAL
+    // =====================================================
+
+    document.addEventListener(
+      "keydown",
+      function (event) {
+
+        if (
+          event.key ===
+          "Escape"
+        ) {
+
+          closeModal();
+
+        }
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>
+

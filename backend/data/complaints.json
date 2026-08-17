@@ -1,0 +1,55 @@
+[
+  {
+    "id": 101,
+    "name": "Anu",
+    "room": "A-203",
+    "phone": "9876543210",
+    "category": "Plumbing",
+    "priority": "High",
+    "description": "Water leaking heavily from bathroom pipe.",
+    "date": "2026-08-15",
+    "status": "In Progress",
+    "technician": "Arun",
+    "photo": "",
+    "extra": ""
+  },
+  {
+    "id": 102,
+    "name": "Rahul",
+    "room": "B-101",
+    "phone": "9123456789",
+    "category": "Electrical",
+    "priority": "Urgent",
+    "description": "Sparking switch near main board.",
+    "date": "2026-08-16",
+    "status": "In Progress",
+    "technician": "Raj Kumar",
+    "photo": ""
+  },
+  {
+    "id": 103,
+    "name": "Kavya",
+    "room": "C-402",
+    "phone": "9988776655",
+    "category": "Internet",
+    "priority": "Medium",
+    "description": "Wi-Fi router not connecting to fiber box.",
+    "date": "2026-08-14",
+    "status": "Resolved",
+    "technician": "Priya",
+    "photo": ""
+  },
+  {
+    "id": 104,
+    "name": "Test User",
+    "room": "A-101",
+    "phone": "9876543210",
+    "category": "Plumbing",
+    "priority": "High",
+    "description": "Water tap is leaking in bathroom",
+    "date": "2026-08-16",
+    "status": "Pending",
+    "technician": "Not Assigned",
+    "photo": ""
+  }
+]
